@@ -1,0 +1,34 @@
+{{#* inline 'helpTile'}}
+    <a href="{{href}}" target="_blank" class="svg help {{type}}" data-svgref="welcome-{{type}}"
+		style="background-image:url('/images/v2/welcome/welcome-{{type}}.jpg')">
+        <svg />
+        <span>{{text}}</span>
+    </a>
+{{/inline}}
+<div class="tabbed" data-activetab="{{activeTab}}" id="startContainer">
+    <nav>
+        <a href="#startRecent">Recent Files</a>
+        <a href="#startTemplates">Templates</a>
+        <a href="#startExamples">Examples</a>
+        <a href="#startHelp">Help</a>
+    </nav>
+    <section id="startRecent" class="tab-flex">
+        <h2>Recent Files</h2>
+    </section>
+    <section id="startTemplates" class="tab-flex">
+        <h2>Templates</h2>
+    </section>
+    <section id="startExamples" class="tab-flex">
+		{{#each examples}}
+        	{{> assets/graphCard this withActionEdit=false withActionView=false withActionChoose=true withLinks=false withJSON=false }}
+		{{/each}}
+    </section>
+    <section id="startHelp" class="tab-flex">
+        {{>helpTile text='Tutorial Channel' type='youtube' 	href='http://youtube.com/Vizor_VR' }}
+        {{>helpTile text='Tutorial Channel' type='vimeo' 	href='http://vimeo.com/vizorvr' }}
+        {{>helpTile text='Tutorial Blog'	type='blog' 	href='http://blog.vizor.io' }}
+        {{>helpTile text='@Vizor_VR'		type='twitter'  href='http://twitter.com/Vizor_VR' }}
+        {{>helpTile text='Vizor Facebook'	type='facebook' href='http://facebook.com/vrvizor' }}
+        {{>helpTile text='Join our Public Slack' type='slack' href='http://vizorvr.herokuapp.com' }}
+    </section>
+</div>

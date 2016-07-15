@@ -870,19 +870,21 @@ VizorUI.setupAssetCard = function($card) {
 		var detail = {
 			id: 	$card.data('objectid'),
 			url: 	$card.data('url'),
+			path: 	$card.data('path'),
 			type: 	$card.data('asset-type'),
 			action:	$this.data('action'),
 			triggeredByEl: e.currentTarget
 		}
 		var eventName = detail.type + '.' + detail.action	// e.g. graph.open, project.delete
 		var cardEvent = new CustomEvent(eventName, {detail: detail})
+		console.log('dispatching', cardEvent)
 		document.dispatchEvent(cardEvent)
 		return true
 	}
 
-	VizorUI.replaceSVGButtons($card);
+	VizorUI.replaceSVGButtons($card)
 
-	jQuery('button', $card).off('.assetUI');	// remove just us from all buttons
+	jQuery('button', $card).off('.assetUI')		// remove just us from all buttons
 
 	jQuery('button.action', $card).on('click.assetUI', dispatchAction)
 	jQuery('input[type=checkbox]', $card).on('change.assetUI', dispatchAction)
@@ -947,6 +949,84 @@ VizorUI.renderGraphTile = function(tileData, withActions, withAllActions) {
 			allowAllActions: withAllActions
 		})
 	return E2.views.partials.assets.graphCard(data)
+}
+
+
+VizorUI.showstart = function(activeTab) {
+
+	return new Promise(function(resolve, reject){
+
+		var selectedGraph
+
+		var data = {
+			activeTab: activeTab || 'startHelp',
+			recent: [],
+			examples: [],
+			templates: []
+		}
+
+		var test1 = {
+			prettyName: 'Basic sky with lights',
+			path: '/data/graphs/create-360.json',
+			previewUrlLarge: '/images/v2/welcome/welcome-facebook.jpg'
+		}
+		var test2 = {
+			// owner:
+			prettyName: 'Desert object',
+			path: '/data/graphs/desert-object.json',
+			previewUrlLarge: '/images/v2/welcome/welcome-vimeo.jpg',
+			// updatedAt: '13/Nov/2016 2:14pm'
+		}
+		var test3 = {
+			// owner:
+			prettyName: 'Desert object',
+			path: '/data/graphs/desert-object.json',
+			previewUrlLarge: '/images/v2/welcome/welcome-vimeo.jpg',
+			// updatedAt: '13/Nov/2016 2:14pm'
+		}
+		var test4 = {
+			// owner:
+			prettyName: 'Desert object',
+			path: '/data/graphs/desert-object.json',
+			previewUrlLarge: '/images/v2/welcome/welcome-vimeo.jpg',
+			// updatedAt: '13/Nov/2016 2:14pm'
+		}
+		data.examples.push(test1, test2, test1, test1, test2, test2)
+		var html = E2.views.patch_editor.startscreen(data)
+		var modal = VizorUI.modalOpen(html, null, 'startscreen')
+		modal[0].id='startscreen'
+		VizorUI.replaceSVGButtons(modal)
+		VizorUI.makeTabbed(modal[0].querySelector('#startContainer'))
+
+		$('.graph.card', modal)
+			.each(function() {
+				VizorUI.setupAssetCard($(this))
+			})
+
+		var chooseHandler = function(e){
+			selectedGraph = e.detail.path
+			modal.modal('hide')
+			return false
+		}
+		document.addEventListener('graph.choose', chooseHandler)
+
+		modal.on('hide.bs.modal', function(){
+			document.removeEventListener('graph.choose', chooseHandler)
+			if (selectedGraph)
+				resolve(selectedGraph)
+			else
+				reject(selectedGraph)
+		})
+	})
+	.then(function(resolve, reject) {
+		if (resolve)
+			console.log('resolved!', resolve)
+		else if (reject)
+			console.log('rejected :/', reject)
+	})
+	.catch(function(){
+		console.log('catch')
+	})
 }
 
 
