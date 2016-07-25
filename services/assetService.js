@@ -1,9 +1,10 @@
-var User = require('../models/user');
-var when = require('when');
+var User = require('../models/user')
+var when = require('when')
+var _ = require('lodash')
 
 function AssetService(assetModel) {
 	this._model = assetModel;
-};
+}
 
 AssetService.prototype.list = function()
 {
@@ -117,25 +118,17 @@ AssetService.prototype.save = function(data, user) {
 
 	return this.findByPath(data.path)
 	.then(function(asset) {
-		if (!asset)
-			asset = new that._model(data);
+		if (!asset) {
+			asset = new that._model(data)
+			asset._creator = user.id
+		}
 
-		asset._creator = user.id;
-		asset.updatedAt = Date.now();
+		// update model with everything from data
+		_.assign(asset, data)
 
-		if (data.tags)
-			asset.tags = data.tags
+		asset.updatedAt = Date.now()
 
-		if (data.previewUrlSmall)
-			asset.previewUrlSmall = data.previewUrlSmall
-
-		if (data.previewUrlLarge)
-			asset.previewUrlLarge = data.previewUrlLarge
-
-		if (data.stat)
-			asset.stat = data.stat
-
-		var dfd = when.defer();
+		var dfd = when.defer()
 
 		asset.save(function(err) {
 			if (err)
