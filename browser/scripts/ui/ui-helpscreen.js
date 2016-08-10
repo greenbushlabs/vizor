@@ -45,7 +45,7 @@ VizorUI.showHelpScreen = function(activeTab) {
 		*/
 		
 		var html = E2.views.patch_editor.helpscreen(data)
-		var modal = VizorUI.modalOpen(html, null, /* className= */ 'helpscreen')
+		var modal = VizorUI.modalOpen(html, null, /* className= */ 'welcome helpscreen')
 		modal[0].id='helpscreen'
 		VizorUI.replaceSVGButtons(modal)
 
@@ -71,10 +71,7 @@ VizorUI.showHelpScreen = function(activeTab) {
 
 		modal.on('hide.bs.modal', function(){
 			document.removeEventListener('graph.choose', chooseHandler)
-			if (selectedGraph)
-				resolve(selectedGraph)
-			else
-				reject(selectedGraph)
+			resolve(selectedGraph)
 		})
 
 		function loadExamples(domEl) {
