@@ -826,11 +826,11 @@ div.bootbox.modal {
 */
 
 
-div#startscreen.bootbox.modal .modal-dialog {
+div#helpscreen.bootbox.modal .modal-dialog {
     width: 716px;
     height: 485px;
 }
-div#startscreen.bootbox.modal .modal-content {
+div#helpscreen.bootbox.modal .modal-content {
     border: 0;
 
     button.bootbox-close-button {
@@ -853,7 +853,7 @@ div#startscreen.bootbox.modal .modal-content {
     }
 }
 
-#startContainer {
+#helpContainer {
 
     background: #f2f2f2;
     .noselect_all;
@@ -881,6 +881,9 @@ div#startscreen.bootbox.modal .modal-content {
             border-left: 1px solid rgba(255,255,255,0.1);
         }
     }
+    @keyframes loadflash {
+        to { color: #fff; }
+    }
     section {
         margin: 5px 10px;
         flex-wrap: wrap;
@@ -888,7 +891,24 @@ div#startscreen.bootbox.modal .modal-content {
         padding: 5px 10px;
         background: #f2f2f2;
         height: 420px;
-        &#startRecent, &#startTemplates, &#startExamples {
+        &.loading {
+            position: relative;
+            >* {
+                opacity: 0.5;
+            }
+            &:after {
+                .center-neg-margin(120px,40px);
+                line-height: 40px;
+                border-radius: 4px;
+                content: "Loading...";
+                background: #272e47;
+                color: #AFBFDF;
+                display: block;
+                letter-spacing: 0.5px;
+                animation: loadflash 0.3s infinite alternate;
+            }
+        }
+        &#helpRecent, &#helpTemplates, &#helpExamples {
             .scrollbar;
 
             &::-webkit-scrollbar-track-piece {
@@ -899,6 +919,8 @@ div#startscreen.bootbox.modal .modal-content {
             }
             max-height: 420px;
             overflow-y: auto;
+
+            .graph.card .meta .user {display: none}
         }
     }
 
@@ -910,8 +932,7 @@ div#startscreen.bootbox.modal .modal-content {
         .mainaction.open {display: none}
         .image {
             height: 130px;
-            // attn
-            background-position: 0 -20px;
+            background-position: 0 0;
             background-size: cover;
             background-repeat: no-repeat;
         }
@@ -940,7 +961,7 @@ div#startscreen.bootbox.modal .modal-content {
             }
         }
     }
-    #startHelp {
+    #helpLinks {
         h2 {
             width:100%;
         }

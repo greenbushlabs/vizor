@@ -1,11 +1,26 @@
 if (typeof uiEvent === 'undefined')
 	uiEvent = {}
 
-uiEvent.changedActiveTab = 'changed:activetab'
+uiEvent.tabbedChanged = 'tabbed:changedActive'
 
 if (typeof VizorUI === 'undefined')
 	VizorUI = {}
 
+/**
+ * click to toggle visible section in div. 
+ * tabbed.less is all the automatic css. 
+ * specify data-activetab
+ * add class tab-flex to toggle visible tab to display:flex instead of display:block
+ * access tabbed element via document.getElementById('...')._tabbed.
+ * @example
+ * <div class="tabbed" data-activetab="tab2">
+ *     <nav><a href="#tab1">1</a>
+ *     		<a href="#tab2">2</a></nav>
+ *     <section id="tab1">...</section>
+ *     <section id="tab2">...</section>
+ * </div>
+ * @param containerEl HTMLElement
+ */
 VizorUI.makeTabbed = function(/* @var HTMLElement */ containerEl) {
 
 	if (containerEl._tabbed)
@@ -44,11 +59,11 @@ VizorUI.makeTabbed = function(/* @var HTMLElement */ containerEl) {
 				content.dataset['active'] = true
 
 				containerEl.dataset['activetab'] = contentId
-				containerEl.dispatchEvent(new CustomEvent('changed:activetab', {
+				containerEl.dispatchEvent(new CustomEvent(uiEvent.tabbedChanged, {
 					detail:{
 						id: contentId,
-						trigger: link,
-						tab: content
+						tab: content,
+						triggeredBy: link
 					}
 				}))
 			} else {

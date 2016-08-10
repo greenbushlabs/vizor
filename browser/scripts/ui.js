@@ -725,9 +725,6 @@ VizorUI.prototype.viewSource = function() {
 
 
 VizorUI.prototype.showStartDialog = function(forceShow) {
-	var dfd = when.defer()
-	var selectedTemplateUrl = null
-
 	// keep track of how many times the dialog has been seen
 	// do not show dialog if user logged in and shown more than twice
 	// do not show if user not logged in and shown more than five times
@@ -756,14 +753,14 @@ VizorUI.prototype.showStartDialog = function(forceShow) {
 
 	// return early in case of not showing dialog
 	if (!showDialog) {
-		dfd.resolve(selectedTemplateUrl)
-		return dfd.promise
+		return new Promise(function(resolve){resolve()})
 	}
 
 	var d = new Date()
 	d.setTime(d.getTime() + (3 * 86400 * 1000))	// 3 days
 	Cookies.set(cookieName, {seen: times}, {expires: d})
 
+	/*
 	var welcomeModal = VizorUI.modalOpen(
 		E2.views.patch_editor.intro({user:E2.models.user.toJSON()}),
 		null,
@@ -815,7 +812,9 @@ VizorUI.prototype.showStartDialog = function(forceShow) {
 		return false;
 	})
 
-	return dfd.promise
+	*/
+	return VizorUI.showHelpScreen()
+	// return dfd.promise
 }
 
 

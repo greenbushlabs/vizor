@@ -5,25 +5,29 @@
         <span>{{text}}</span>
     </a>
 {{/inline}}
-<div class="tabbed" data-activetab="{{activeTab}}" id="startContainer">
+<div class="tabbed" data-activetab="{{activeTab}}" id="helpContainer">
     <nav>
+        {{!--
         <a href="#startRecent">Recent Files</a>
         <a href="#startTemplates">Templates</a>
-        <a href="#startExamples">Examples</a>
-        <a href="#startHelp">Help</a>
+        --}}
+        <a href="#helpExamples">Examples</a>
+        <a href="#helpLinks">Help</a>
     </nav>
+    {{!--
     <section id="startRecent" class="tab-flex">
         <h2>Recent Files</h2>
     </section>
     <section id="startTemplates" class="tab-flex">
         <h2>Templates</h2>
     </section>
-    <section id="startExamples" class="tab-flex">
+    --}}
+    <section id="helpExamples" class="tab-flex">
 		{{#each examples}}
         	{{> assets/graphCard this withActionEdit=false withActionView=false withActionChoose=true withLinks=false withJSON=false }}
 		{{/each}}
     </section>
-    <section id="startHelp" class="tab-flex">
+    <section id="helpLinks" class="tab-flex">
         {{>helpTile text='Tutorial Channel' type='youtube' 	href='http://youtube.com/Vizor_VR' }}
         {{>helpTile text='Tutorial Channel' type='vimeo' 	href='http://vimeo.com/vizorvr' }}
         {{>helpTile text='Tutorial Blog'	type='blog' 	href='http://blog.vizor.io' }}
