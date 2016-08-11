@@ -27,21 +27,7 @@ VizorUI.showHelpScreen = function(activeTab) {
 			previewUrlLarge: '/images/v2/welcome/welcome-vimeo.jpg',
 			// updatedAt: '13/Nov/2016 2:14pm'
 		}
-		var test3 = {
-			// owner:
-			prettyName: 'Desert object',
-			path: '/data/graphs/desert-object.json',
-			previewUrlLarge: '/images/v2/welcome/welcome-vimeo.jpg',
-			// updatedAt: '13/Nov/2016 2:14pm'
-		}
-		var test4 = {
-			// owner:
-			prettyName: 'Desert object',
-			path: '/data/graphs/desert-object.json',
-			previewUrlLarge: '/images/v2/welcome/welcome-vimeo.jpg',
-			// updatedAt: '13/Nov/2016 2:14pm'
-		}
-		data.examples.push(test1, test2, test1, test1, test2, test2)
+		data.examples.push(test1, test2, test1, test1)
 		*/
 		
 		var html = E2.views.patch_editor.helpscreen(data)
@@ -57,11 +43,6 @@ VizorUI.showHelpScreen = function(activeTab) {
 				VizorUI.setupAssetCard($(this))
 			})
 
-		var chooseHandlerWReload = function(e) {
-			window.location = e.detail.path + "/edit"
-			return false
-		}
-
 		var chooseHandler = function(e){
 			selectedGraph = "/data/graph" + e.detail.path + ".json"
 			modal.modal('hide')
@@ -74,12 +55,17 @@ VizorUI.showHelpScreen = function(activeTab) {
 			resolve(selectedGraph)
 		})
 
+		var loaded = {}
+
 		function loadExamples(domEl) {
+			if (loaded.examples)
+				return
 			var url = '/examples'
 			domEl.classList.add('loading')
 			$.get(url)
 				.success(function(response){
 					domEl.classList.remove('loading')
+					loaded.examples = true
 					var renderFlags = {
 						withActionEdit: false,
 						withActionView: false,
